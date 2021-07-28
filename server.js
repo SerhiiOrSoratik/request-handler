@@ -31,37 +31,29 @@ const frequency = (text) => {
 }
 
 const findMostCommonElement = (wordsMap) => {
-    return ([...wordsMap.entries()].reduce((a, e ) => e[1] > a[1] ? e : a))
+    return ([...wordsMap.entries()].reduce((a, e) => e[1] > a[1] ? e : a))
 }
 
 const server = http.createServer((req, res) => {
     let urlHref = encodeURI(req.url);
     urlHref = url.parse(decodeURI(urlHref), true);
     pathname = urlHref.pathname;
-    if(req.method === 'GET') {
-        if(pathname === '/headers') {
+        if(pathname === '/headers' && req.method === 'GET') {
             // curl localhost:3000/headers
             const headers = req.headers;
             console.log(headers)
             res.end(JSON.stringify(req.headers) + '\n');
         }
-        else if(pathname === '/plural') {
+        else if(pathname === '/plural'  && req.method === 'GET') {
             // curl 'localhost:3000/plural?number=1&one=person&few=people&many=people'
             // curl -G 'localhost:3000/plural' --data-urlencode 'number=5' --data-urlencode 'one=год' --data-urlencode 'few=года' --data-urlencode 'many=лет'
             const number = urlHref.query.number;
             const one = urlHref.query.one;
             const few = urlHref.query.few;
             const many = urlHref.query.many;
-            console.log(one)
             res.end(pl(number, one, few, many) + '\n')
         }
-        else {
-            res.writeHead(404, 'Not Found');
-            res.end();
-        }
-    }
-    else if(req.method === 'POST') {
-        if(pathname === '/frequency') {
+        else if(pathname === '/frequency' && req.method === 'POST') {
              //curl -X POST localhost:3000/frequency --data-raw "Little red fox jumps over logs. Fox is red"
              let body = '';
              req.on('data', chunk => {
@@ -84,14 +76,8 @@ const server = http.createServer((req, res) => {
         }
         else {
             res.writeHead(404, 'Not Found');
-            res.end();
+            res.end('Not Found');
         }
-    }
-    else {
-        res.writeHead(404, 'Not Found');
-        res.end();
-    }
-    
 })
 
 server.listen(3000, () => {
