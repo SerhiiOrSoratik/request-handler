@@ -56,7 +56,8 @@ const server = http.createServer((req, res) => {
             res.end(pl(number, one, few, many) + '\n')
         }
         else {
-            res.end('Wrong query\n')
+            res.writeHead(404, 'Not Found');
+            res.end();
         }
     }
     else if(req.method === 'POST') {
@@ -82,11 +83,13 @@ const server = http.createServer((req, res) => {
              });
         }
         else {
-            res.end('Wrong query\n')
+            res.writeHead(404, 'Not Found');
+            res.end();
         }
     }
     else {
-        res.end('Wrong query\n')
+        res.writeHead(404, 'Not Found');
+        res.end();
     }
     
 })
