@@ -73,13 +73,13 @@ const server = http.createServer((req, res) => {
                  res.setHeader('Unique-word-count', fr.size);
                  res.setHeader('Most-common-word', findMostCommonElement(fr)[0])
                  res.writeHead(200, {'Content-Type': 'application/json'});
-                 let test = {};
+                 let convertedMap = {};
                  fr.forEach((value, key) => {
                     let keys = key.split('.'),
                         last = keys.pop();
-                    keys.reduce((r, a) => r[a] = r[a] || {}, test)[last] = value;
+                    keys.reduce((r, a) => r[a] = r[a] || {}, convertedMap)[last] = value;
                 });
-                 res.end(JSON.stringify(test) + '\n');
+                 res.end(JSON.stringify(convertedMap) + '\n');
              });
         }
         else {
